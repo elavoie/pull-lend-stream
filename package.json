@@ -1,0 +1,37 @@
+{
+  "name": "pull-lend-stream",
+  "version": "1.0.0",
+  "description": "Continuously lends values to concurrent sub-streams. Transparent re-lending in case of failure of sub-streams.",
+  "main": "src/index.js",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elavoie/pull-lend-stream.git"
+  },
+  "keywords": [
+    "pull-stream",
+    "fault-tolerant",
+    "distributed"
+  ],
+  "author": "Erick Lavoie",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/elavoie/pull-lend-stream/issues"
+  },
+  "homepage": "https://github.com/elavoie/pull-lend-stream#readme",
+  "devDependencies": {
+    "async.util.setimmediate": "^0.5.2",
+    "debug": "^2.3.3",
+    "pull-stream": "^3.5.0",
+    "tape": "^4.6.3"
+  },
+  "dependencies": {
+    "pull-lend": "^2.0.1"
+  }
+}
