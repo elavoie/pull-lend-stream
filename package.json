@@ -27,11 +27,13 @@
   "homepage": "https://github.com/elavoie/pull-lend-stream#readme",
   "devDependencies": {
     "async.util.setimmediate": "^0.5.2",
-    "debug": "^2.3.3",
+    "pull-eager-buffer": "^1.0.3",
+    "pull-limit": "^1.0.1",
     "pull-stream": "^3.5.0",
     "tape": "^4.6.3"
   },
   "dependencies": {
-    "pull-lend": "^2.0.1"
+    "debug": "^2.3.3",
+    "pull-lend": "^2.0.2"
   }
 }
