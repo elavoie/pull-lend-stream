@@ -101,7 +101,8 @@ Properties
 7. Unfair: if a *subStream* reads values faster than other *subStreams*, it
    will obtain more values.
 8. When a *borrower* is called, *err* is thruthy if and only if:  
-  8.1 *lender* is not connected yet;  
+  8.1 *lender.sink* has not been called yet (lender is not connected to an
+    upstream source);  
   8.2 *lender.source* was aborted;  
   8.3 all available values have been borrowed and all results have been sourced
 
