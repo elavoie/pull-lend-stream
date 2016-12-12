@@ -17,7 +17,7 @@ Quick Example
 =============
 
     var pull = require('pull-stream')
-    var lendStream = require('../')
+    var lendStream = require('pull-lend-stream')
     
     var lender = lendStream()
     
@@ -35,10 +35,6 @@ Quick Example
     }
     
     function borrower (mapper) {
-      mapper = mapper || function (value, cb) {
-        cb(null, value)
-      }
-    
       return function (err, stream) {
         if (err) return console.log(err.message)
     
@@ -90,11 +86,11 @@ Properties
 
 1. If no *subStream* is read then read is never called.
 2. Multiple *subStreams* can be created by calling *lendStream* multiple times.
-3. Once *lendStream* has been called,
+3. Once *lendStream* has been called,  
   3.1 the borrower will eventually be called either with a *subStream* or 
-      an *err*;  
+    an *err*;  
   3.2 if there is no *err* and values are read by calling *subStream.source*, 
-      *subStream.source* will eventually abort.
+    *subStream.source* will eventually abort.
 4. *lender.source* closes after *lender.sink* has received an abort and all
    *subStreams* have closed.
 5. *lender.source* produces results in the order in which the values were
