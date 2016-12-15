@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/elavoie/pull-lend-stream.svg?branch=master)](https://travis-ci.org/elavoie/pull-lend-stream)
 
+# pull-lend-stream
+
 Continuously lends values to concurrent sub-streams. Transparent re-lending in case of failure of sub-streams.
 
 Each sub-stream continuously borrows (different) values from a lender and returns results back after processing.
