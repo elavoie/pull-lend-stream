@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "debug": "^2.6.3",
-    "pull-lend": "^2.1.1",
+    "pull-lend": "^2.1.2",
     "pull-limit": "^1.2.2"
   }
 }
