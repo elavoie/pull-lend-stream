@@ -68,6 +68,16 @@ module.exports = function () {
     }
   }
 
+  function state () {
+    return {
+      connected: connected,
+      ended: ended,
+      closed: closed,
+      openedNb: opened,
+      lendState: lend._state()
+    }
+  }
+
   return {
     sink: function (read) {
       connected = true
@@ -95,6 +105,7 @@ module.exports = function () {
         }
         cb(null, data)
       })
-    }
+    },
+    _state: state
   }
 }

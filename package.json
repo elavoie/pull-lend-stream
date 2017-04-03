@@ -1,6 +1,6 @@
 {
   "name": "pull-lend-stream",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Continuously lends values to concurrent sub-streams. Transparent re-lending in case of failure of sub-streams.",
   "main": "src/index.js",
   "directories": {
@@ -34,6 +34,6 @@
   },
   "dependencies": {
     "debug": "^2.3.3",
-    "pull-lend": "^2.0.2"
+    "pull-lend": "^2.1.0"
   }
 }

@@ -102,7 +102,7 @@ Properties
    migrated to other *subStreams*.
 7. Unfair: if a *subStream* reads values faster than other *subStreams*, it
    will obtain more values.
-8. When a *borrower* is called, *err* is thruthy if and only if:  
+8. When a *borrower* is called, *err* is truthy if and only if:  
   8.1 *lender.sink* has not been called yet (lender is not connected to an
     upstream source);  
   8.2 *lender.source* was aborted;  
@@ -118,3 +118,21 @@ Expectations on the sub-streams
    event should propagate to their sink. Otherwise it will indefinitely prevent
    the lender from closing (Prop. 4).
 
+Debugging
+=========
+
+You can obtain a trace of the internal events of the module by activating the logging using the `DEBUG=pull-lend-stream` environment variable (see [debug](http://npmjs.org/debug)).
+
+You can also obtain the internal state of the module at a specific point in time by calling the `_state()` method. It returns an object with the following properties:
+````
+    return {
+      connected: Boolean, // The lender is connecter to an upstream source
+      ended: Boolean, // Upstream is closed
+      closed: Boolean, // lender is closed
+      openedNb: Number, // Number of sub-streams opened
+      lendState: Object // State of the internal pull-lend module
+    }
+
+````
+
+The output of the `_state()` method should not be relied on for regular operations because it depends on the implementation of the module and may change in the future.
