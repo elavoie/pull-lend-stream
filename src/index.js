@@ -74,7 +74,7 @@ module.exports = function () {
       ended: ended,
       closed: closed,
       openedNb: opened,
-      lendState: lend._state()
+      lendState: lender._state()
     }
   }
 
