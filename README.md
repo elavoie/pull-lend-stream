@@ -76,7 +76,8 @@ All callbacks ('cb') have the '(err, value)' signature.
             err,
             subStream: {
                 source: (abort, cb),
-                sink: (read: (abort, resultCb))
+                sink: (read: (abort, resultCb)),
+                close: (?err)
             })),
         source: (abort, resultCb)
     }
@@ -106,15 +107,13 @@ Properties
   8.1 *lender.sink* has not been called yet (lender is not connected to an
     upstream source);  
   8.2 *lender.source* was aborted;  
-  8.3 all available values have been borrowed and all results have been sourced
+  8.3 all available values have been borrowed and all results have been sourced.
+9. *subStream.close(?err)* ends the corresponding *subStream* with the error *err* if present, or with *true* otherwise.
 
 Expectations on the sub-streams
 ===============================
 
-1. Sub-streams should only produce a single result for each value read
-   (currently unenfored, behaviour is unspecified if the constraint is not
-    respected).
-2. Sub-streams should correctly close when *subStream.source* aborts and the
+1. Sub-streams should correctly close when *subStream.source* aborts and the
    event should propagate to their sink. Otherwise it will indefinitely prevent
    the lender from closing (Prop. 4).
 

@@ -21,21 +21,24 @@ module.exports = function () {
         })
       }
     }
+
+    function source (_abort, cb) {
+      if (abort || _abort) {
+        abort = abort || _abort
+        if (cb) cb(abort)
+        close(abort)
+        return
+      }
+
+      lender.lend(function (err, value, sink) {
+        if (err) return cb(ended = err)
+
+        queue.push(sink)
+        cb(null, value)
+      })
+    }
     return {
-      source: function (_abort, cb) {
-        if (_abort) {
-          if (cb) cb(abort = _abort)
-          close(abort)
-          return
-        }
-
-        lender.lend(function (err, value, sink) {
-          if (err) return cb(ended = err)
-
-          queue.push(sink)
-          cb(null, value)
-        })
-      },
+      source: source,
       sink: function (read) {
         opened++
         log('opened sub-stream, ' + opened + ' currently opened in total')
@@ -55,6 +58,10 @@ module.exports = function () {
 
           read(abort, next)
         })
+      },
+      close: function (err) {
+        err = err || true
+        source(err)
       }
     }
   }
