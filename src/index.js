@@ -34,6 +34,7 @@ module.exports = function () {
 
       lender.lend(function (err, value, sink) {
         if (err) return cb(ended = err)
+        if (abort || closed) sink(abort || closed)
 
         queue.push(sink)
         cb(null, value)
