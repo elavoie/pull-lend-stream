@@ -16,7 +16,9 @@ module.exports = function () {
 
     function close (abort) {
       if (abort) {
-        queue.forEach(function (sink) {
+        var q = queue.slice()
+        queue = []
+        q.forEach(function (sink) {
           sink(abort)
         })
       }
@@ -62,6 +64,7 @@ module.exports = function () {
       close: function (err) {
         err = err || true
         source(err)
+        close(err)
       }
     }
   }
