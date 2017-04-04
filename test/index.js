@@ -372,6 +372,7 @@ tape('Property 7: greedy eager buffer', function (t) {
       pull(
         stream,
         pull.through(function () { borrower.count++ }),
+        delay(),
         b,
         stream
       )
@@ -402,8 +403,7 @@ tape('Property 7: greedy eager buffer', function (t) {
     pull.drain(null, function () {
       log('b100: ' + b100.count)
       log('eager: ' + eager.count)
-      t.equal(b100.count, 0)
-      t.equal(eager.count, N + 1)
+      t.ok(eager.count > b100.count)
       t.end()
     })
   )
