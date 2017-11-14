@@ -2,6 +2,8 @@
 
 # pull-lend-stream
 
+A refinement of the [paramap](https://github.com/pull-stream/pull-paramap) module for dynamic, unbounded, and fault-tolerant parallel processing.
+
 Continuously lends values to concurrent sub-streams. Transparent re-lending in case of failure of sub-streams.
 
 Each sub-stream continuously borrows (different) values from a lender and returns results back after processing.
