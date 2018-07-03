@@ -175,9 +175,7 @@ function interleaving (options) {
   active.lender.createSubStream = true
   actions.lender.createSubStream = function createSubStream () {
     if (subStreamIndex >= maxSubStreams) {
-      console.error('Maximum number of substream creation reached, aborting')
-      console.error('seed used: ' + startingSeed)
-      process.exit(1)
+      throw new Error('Maximum number of substream creation reached, aborting. Seed used: ' + startingSeed)
     }
 
     lender.lendStream(function (err, s) {
