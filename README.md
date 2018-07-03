@@ -141,4 +141,4 @@ The output of the `_state()` method should not be relied on for regular operatio
 Random Testing
 ==============
 
-A tool for random testing is available under [./test/random](./test/random). The methodology used is explained in the [README](./test/random/README.md).
+A tool for random testing of pull-lend-stream is available ([pull-lend-stream-random-tester](https://github.com/elavoie/pull-lend-stream-random-tester)).
