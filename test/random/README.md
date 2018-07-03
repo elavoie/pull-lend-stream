@@ -63,7 +63,8 @@ The format is an ASCII representation of the Event-Based Notation introduced in 
             | -> <Event>             # Event initiated internally
 ````
 
-Where: 
+Where:
+
     * ````<Port>```` can be ````I```` (Input), ````O```` (Output), ````S[<Index>]```` (Sub-stream with index), 
     * ````<Name>```` can be ````ask````, ````abort````, ````fail````, ````value````, ````done````, or ````error````
     * ````<Index>```` is an Integer 
