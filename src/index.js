@@ -19,8 +19,9 @@ module.exports = function () {
     function close (abort) {
       if (abort) {
         if (pending) {
-          pending(abort)
+          var cb = pending
           pending = null
+          cb(abort)
         }
         var q = queue.slice()
         log('terminating ' + q.length + ' pending callbacks')
@@ -44,12 +45,18 @@ module.exports = function () {
       lender.lend(function (err, value, sink) {
         if (err) {
           log('lender.lend(' + err + ', ...)')
-          if (pending) pending(ended = err)
-          pending = null
+          if (pending) {
+            cb = pending
+            pending = null
+            cb(ended = err)
+          }
         } else if (abort || closed) {
           sink(abort || closed)
-          if (pending) pending(abort || closed)
-          pending = null
+          if (pending) {
+            cb = pending
+            pending = null
+            cb(abort || closed)
+          }
         } else {
           queue.push(sink)
           if (pending !== cb) throw new Error('Invalid pending callback')
@@ -67,6 +74,7 @@ module.exports = function () {
           if (err) {
             close(err)
             opened--
+            if (opened < 0) throw new Error('Callback called more than once')
             log('closing sub-stream, ' + opened + ' still opened')
             closeLender()
             return

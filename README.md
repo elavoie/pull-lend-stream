@@ -137,3 +137,8 @@ You can also obtain the internal state of the module at a specific point in time
 ````
 
 The output of the `_state()` method should not be relied on for regular operations because it depends on the implementation of the module and may change in the future.
+
+Random Testing
+==============
+
+A tool for random testing is available under [./test/random](./test/random). The methodology used is explained in the [README](./test/random/README.md).

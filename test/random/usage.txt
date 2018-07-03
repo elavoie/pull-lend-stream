@@ -1,0 +1,52 @@
+usage: interleaving [OPTIONS]
+
+Deterministically execute one possible interleaving of a concurrent execution
+of StreamLender. If the execution results in a violation of a pull-stream
+protocol invariant or a StreamLender property and exit with an error. 
+Otherwise, exit normally.
+
+Options:
+    --early-termination  (!T, Boolean)
+                         If T=true or explicitly invoked, the input of 
+                         StreamLender will produce values until being aborted 
+                         by the output.  Otherwise, do as in the --normal-sequence
+                         case. Cannot be invoked simultaneously with 
+                         --normal-sequence.
+
+    --error-termination  (TS=random(Boolean), Boolean)
+                         If TS is true or the option is explicitly invoked, the
+                         input will terminate with an error or the output will
+                         terminate with a failure. Otherwise, the input will
+                         terminate with a done or the output will abort normally.
+
+    --count=N            (N=1, Number)
+                         If T is true, represents the maximum number of values
+                         produced by the input. Otherwise, represents the
+                         maximum number of values read by the output.
+
+    --parallelism=P      (P=1, Number)
+                         Maximum number of concurrent sub-streams at any time.
+
+    --max-sub-streams=M  (M=20, Number)
+                         Maximum number of sub-streams created during execution.
+                         Useful for stopping infinite loops. 
+
+    --normal-sequence    (T=random(Boolean), Boolean) 
+                         If T is true or the option is explicitly invoked, the 
+                         output of StreamLender will keep asking for values until 
+                         the input is done. Otherwise, do as in the 
+                         --early-termination case. Cannot be invoked
+                         simultaneously with --early-termination.
+
+    --seed=S             (S=random(Number), Number)
+                         Use S as a seed for the pseudo-random number generator.
+
+More or less verbose traces of execution can be produced by setting the DEBUG
+environment variable. Ex: 
+
+    DEBUG=interleaving,pull-lend-stream,pull-lend ./interleaving
+
+Multiple tests may also be executed in a loop. Ex:
+
+    while ./interleaving; do sleep 0.1; done
+

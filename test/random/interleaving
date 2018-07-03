@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+var fs = require('fs')
+var path = require('path')
+var interleaving = require('./interleaving.js')
+var argv = require('minimist')(process.argv)
+
+if (argv.help) {
+  console.log(fs.readFileSync(path.join(__dirname, 'usage.txt')).toString())
+  process.exit(0)
+}
+
+var options = {}
+
+if (argv['early-termination'] && argv['normal-sequence']) {
+  console.error('Invalid combination of both --early-termination and --normal-sequence, choose one or the other')
+  process.exit(1)
+} else if (argv['early-termination']) {
+  options.normalSequence = false
+} else if (argv['normal-sequence']) {
+  options.normalSequence = true
+}
+
+if (argv['error-termination']) {
+  options.normalTermination = false
+}
+
+if (argv.hasOwnProperty('count')) {
+  options.count = argv.count
+} else {
+  options.count = 1
+}
+
+if (argv.hasOwnProperty('parallelism')) {
+  if (!(argv.parallelism >= 1)) {
+    console.error('Parallelism number must be >= 1')
+    process.exit(1)
+  }
+  options.parallelism = argv.parallelism
+} else {
+  options.parallelism = 1
+}
+
+if (argv.hasOwnProperty('max-sub-streams')) {
+  options.maxSubStreams = argv['max-sub-streams']
+} else {
+  options.maxSubStreams = 20
+}
+
+if (argv.hasOwnProperty('seed')) {
+  options.seed = argv.seed
+}
+
+interleaving(options)
