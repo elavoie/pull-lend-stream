@@ -5,6 +5,7 @@ module.exports = function () {
   var connected = false // The lender sink is connected
   var ended = false // No more value to read
   var closed = false // This lender is closed
+  var aborted = false // Aborted from downstream
   var opened = 0 // Number of subStreams still opened
   var lender = lend()
   var _cb = null
@@ -13,10 +14,16 @@ module.exports = function () {
   function createSubStream () {
     var queue = []
     var abort = false // source aborted
+    var pending = null
 
     function close (abort) {
       if (abort) {
+        if (pending) {
+          pending(abort)
+          pending = null
+        }
         var q = queue.slice()
+        log('terminating ' + q.length + ' pending callbacks')
         queue = []
         q.forEach(function (sink) {
           sink(abort)
@@ -26,18 +33,29 @@ module.exports = function () {
 
     function source (_abort, cb) {
       if (abort || _abort) {
+        log('sub-stream abort: ' + _abort)
         abort = abort || _abort
-        if (cb) cb(abort)
         close(abort)
+        if (cb) cb(abort)
         return
       }
 
+      pending = cb
       lender.lend(function (err, value, sink) {
-        if (err) return cb(ended = err)
-        if (abort || closed) sink(abort || closed)
-
-        queue.push(sink)
-        cb(null, value)
+        if (err) {
+          log('lender.lend(' + err + ', ...)')
+          if (pending) pending(ended = err)
+          pending = null
+        } else if (abort || closed) {
+          sink(abort || closed)
+          if (pending) pending(abort || closed)
+          pending = null
+        } else {
+          queue.push(sink)
+          if (pending !== cb) throw new Error('Invalid pending callback')
+          pending = null
+          cb(null, value)
+        }
       })
     }
     return {
@@ -45,7 +63,7 @@ module.exports = function () {
       sink: function (read) {
         opened++
         log('opened sub-stream, ' + opened + ' currently opened in total')
-        read(abort, function next (err, result) {
+        read(abort || aborted, function next (err, result) {
           if (err) {
             close(err)
             opened--
@@ -59,7 +77,7 @@ module.exports = function () {
             sink(null, result)
           }
 
-          read(abort, next)
+          read(abort || aborted, next)
         })
       },
       close: function (err) {
@@ -107,6 +125,7 @@ module.exports = function () {
     },
     source: function (abort, cb) {
       if (abort) log('source(' + abort + ')')
+      aborted = abort
       lender.source(abort, function (err, data) {
         if (err) {
           log('lender.source.cb(' + err + ')')
