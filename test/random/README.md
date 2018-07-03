@@ -42,8 +42,9 @@ exceptional cases to occur and be tested.
 
 An execution may be performed by invoking the ````interleaving```` command-line tool, and a trace
 of execution may be activated by setting the DEBUG environment variable:
-
+````
   DEBUG=interleaving ./interleaving
+````
 
 Other options can be accessed by invoking ````./interleaving --help````.
 
@@ -55,16 +56,17 @@ before terminating its output. Behaviour when terminating on the output first is
 # Traces format
 
 The format is an ASCII representation of the Event-Based Notation introduced in https://arxiv.org/abs/1801.06144.
-
+````
     <Event> := <Port>:<Name>_<Index> # Action chosen
             | created S[<Index>]
             | destroyed S[<Index>]   
             | -> <Event>             # Event initiated internally
+````
 
 Where: 
-    <Port> can be 'I' (Input), 'O' (Output), 'S[<Index>]' (Sub-stream <Index>), 
-    <Name> can be 'ask', 'abort', 'fail', 'value', 'done', or 'error'
-    <Index> is an Integer 
+    ````<Port>```` can be ````I```` (Input), ````O```` (Output), ````S[<Index>]```` (Sub-stream with index), 
+    ````<Name>```` can be ````ask````, ````abort````, ````fail````, ````value````, ````done````, or ````error````
+    ````<Index>```` is an Integer 
 
 Example:
 ````
@@ -125,6 +127,7 @@ Here are the possible options with the default values:
   normalSequence: random(),     # Boolean, derived from seed
   normalTermination: random(),  # Boolean, derived from seed
 }
+````
 
 The execution is synchronous and throws an exception if an invariant or a
 module property is violated.
